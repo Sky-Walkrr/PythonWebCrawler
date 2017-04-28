@@ -17,20 +17,37 @@ class BDTB:
             pattern_title = re.compile(r'core_title.*?title="(.*?)"', re.S)
             pattern_page_info = re.compile(r'l_reply_num.*?<span.*?>(.*?)<.*?>(.*?)<span.*?>(.*?)</.*?>(.*?)</.*?', re.S)
             pattern_contents = re.compile(r'class="d_post_content j_d_post_content.*?>(.*?)</div.*?<span class="tail-info">(.*?)<', re.S)
-            print '帖子标题：', re.search(pattern_title, response).group(1), '\n'
+            data = file('data.txt', 'w')
+            title = '帖子标题：' + re.search(pattern_title, response).group(1) + '\n'
+            data.write(title)
+            print title
             page_info = re.search(pattern_page_info, response)
-            print page_info.group(1), page_info.group(2), page_info.group(3), page_info.group(4), '\n'
+            page_data = page_info.group(1) + page_info.group(2) + page_info.group(3) + page_info.group(4) + '\n'
+            print page_data
+            data.write(page_data)
             contents = re.findall(pattern_contents, response)
+            content_data = []
             for content in contents:
-                print content[1], '----------------------------------------------------------------\n'
+                floor = content[1] + '----------------------------------------------------------------\n'
+                print floor
+                content_data.append(floor)
                 content = self.tool.clean(content[0])
                 print content, '\n'
-
+                content_data.append(content + '\n')
+            for c in content_data:
+                data.write(c)
         except urllib2.URLError, e:
             if hasattr(e, 'code'):
                 print '--> url error ' + str(e.code)
             if hasattr(e, 'reason'):
                 print '--> url error ' + e.reason
+        except IOError, e:
+            if hasattr(e, 'code'):
+                print '--> IO error ' + str(e.code)
+            if hasattr(e, 'reason'):
+                print '--> IO error ' + e.reason
+        finally:
+            data.close()
 
 
 # 处理文本工具类
