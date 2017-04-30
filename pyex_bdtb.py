@@ -17,7 +17,7 @@ class BDTB:
             pattern_title = re.compile(r'core_title.*?title="(.*?)"', re.S)
             pattern_page_info = re.compile(r'l_reply_num.*?<span.*?>(.*?)<.*?>(.*?)<span.*?>(.*?)</.*?>(.*?)</.*?', re.S)
             pattern_contents = re.compile(r'class="d_post_content j_d_post_content.*?>([^(<div|</div)].*?)</div.*?<span class="tail-info">(\d+.*?)<', re.S)
-            data = open('data.txt', 'a')
+            data = open('data.txt', 'a')  # a for append
             title = '帖子标题：' + re.search(pattern_title, response).group(1) + '\n'
             print '正在写入第%d页数据。。。' % page
             data.write(title)
