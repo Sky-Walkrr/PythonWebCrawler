@@ -102,3 +102,41 @@ def bs():
         print item.get_text()  # get_text()也是bs4.element的方法
 
 
+def selenium():
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+
+    chrome = webdriver.Chrome()
+    chrome.get("http://www.python.org")
+    assert 'Python' in chrome.title
+    element = chrome.find_element_by_name('q')  # this is the name of search bar in python official page
+    element.send_keys('pycon')  # simulate inputting
+    element.send_keys(Keys.RETURN)
+    print chrome.page_source
+
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+
+# unit test in Python
+class PythonOrgSearchTest(unittest.TestCase):  # inherit
+    def setUp(self):
+        self.drive = webdriver.Chrome()
+
+    def test_python_org_search(self):
+        drive = self.drive
+        drive.get("http://www.python.org")
+        assert 'Python' in drive.title
+        element = drive.find_element_by_name('q')
+        element.send_keys('pycon')
+        element.send_keys(Keys.RETURN)
+        print drive.page_source
+
+    def tearDown(self):
+        self.drive.close()
+
+if __name__ == '__main__':
+    unittest.main()
+
+
