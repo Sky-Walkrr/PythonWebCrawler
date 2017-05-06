@@ -53,7 +53,7 @@ class Handler(BaseHandler):
             for img in imgs:
                 url = img.attr.src
                 if url:
-                    img_name = path + str(count) + self.tool.get_suffix(url)
+                    img_name = name + str(count) + '.' + self.tool.get_suffix(url)
                     count += 1
                     self.crawl(url, callback=self.save_img, save={'path': path, 'name': img_name})
 
